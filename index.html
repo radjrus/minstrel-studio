@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minstrel Studio — Worldbuilding &amp; Writing Software for Novelists</title>
+<meta name="description" content="Minstrel Studio is a free worldbuilding and manuscript app for fiction writers: wiki-style world pages, custom calendars, maps, relationship maps, and a full manuscript editor. Your work stays on your computer.">
+<meta property="og:title" content="Minstrel Studio">
+<meta property="og:description" content="Free worldbuilding and writing software for novelists. Build your world, then write your book in the same place.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314284b'/%3E%3Cellipse cx='28' cy='42' rx='15' ry='13' fill='%23d4a537'/%3E%3Cpath d='M38 34 L54 12' stroke='%23d4a537' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy:#0f2142;
+    --navy-2:#17305c;
+    --blue:#2f5fa8;
+    --gold:#d4a537;
+    --gold-soft:#f1dfa8;
+    --paper:#faf7ef;
+    --ink:#1d2433;
+    --muted:#5a6479;
+    --line:#e3dcc8;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Georgia,"Times New Roman",serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.65;
+    font-size:18px;
+  }
+  a{color:var(--blue)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* top bar */
+  header.top{
+    background:var(--navy);
+    color:#fff;
+  }
+  header.top .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:14px;padding-bottom:14px;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font-size:1.25rem;letter-spacing:.02em}
+  .brand svg{width:34px;height:34px}
+  nav a{color:var(--gold-soft);text-decoration:none;margin-left:22px;font-size:.95rem;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+  nav a:hover{color:#fff}
+
+  /* hero */
+  .hero{
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 70%);
+    color:#fff;
+    padding:76px 0 88px;
+    text-align:center;
+  }
+  .hero .logo{width:96px;height:96px;margin:0 auto 18px;display:block}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.4rem);margin:0 0 14px;font-weight:normal;letter-spacing:.01em}
+  .hero h1 span{color:var(--gold)}
+  .hero p.lead{max-width:680px;margin:0 auto 34px;font-size:1.25rem;color:#d9e2f3}
+  .btn{
+    display:inline-block;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-weight:600;font-size:1.05rem;
+    padding:14px 30px;border-radius:8px;text-decoration:none;
+    background:var(--gold);color:var(--navy);
+    border:2px solid var(--gold);
+    transition:transform .08s ease, background .15s ease;
+  }
+  .btn:hover{background:#e3b94c;transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:#fff;border-color:#8ea6d1;margin-left:10px}
+  .btn.ghost:hover{background:rgba(255,255,255,.08)}
+  .hero .fine{margin-top:18px;font-size:.9rem;color:#a9b9d8;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+
+  /* sections */
+  section{padding:64px 0}
+  section h2{font-size:2rem;font-weight:normal;margin:0 0 8px;color:var(--navy)}
+  section h2 + p.sub{margin:0 0 34px;color:var(--muted);max-width:680px}
+  .rule{width:56px;height:3px;background:var(--gold);margin:12px 0 22px;border:0}
+
+  .grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px 24px 20px;
+    box-shadow:0 1px 0 rgba(15,33,66,.04);
+  }
+  .card h3{margin:0 0 8px;font-size:1.15rem;color:var(--navy-2)}
+  .card h3::before{content:"";display:inline-block;width:10px;height:10px;background:var(--gold);border-radius:50%;margin-right:10px;vertical-align:middle}
+  .card p{margin:0;font-size:1rem;color:#3a4358}
+
+  .band{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .two{display:grid;gap:40px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start}
+  ol.steps{padding-left:0;list-style:none;counter-reset:s;margin:0}
+  ol.steps li{counter-increment:s;position:relative;padding:0 0 18px 54px;font-size:1.02rem}
+  ol.steps li::before{
+    content:counter(s);position:absolute;left:0;top:-2px;
+    width:36px;height:36px;border-radius:50%;
+    background:var(--navy);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:system-ui,sans-serif;font-weight:700;
+  }
+  .note{
+    background:#fff8e1;border-left:4px solid var(--gold);
+    padding:14px 18px;border-radius:6px;font-size:.97rem;color:#4a4021;
+  }
+  ul.plain{margin:0;padding-left:20px}
+  ul.plain li{margin-bottom:8px}
+
+  .showcase{
+    background:linear-gradient(160deg,var(--navy-2),var(--navy));
+    color:#fff;border-radius:16px;padding:40px;text-align:center;
+  }
+  .showcase h2{color:#fff}
+  .showcase p{color:#d9e2f3;max-width:620px;margin:0 auto 24px}
+
+  footer{background:var(--navy);color:#a9b9d8;padding:34px 0;font-size:.95rem;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+  footer a{color:var(--gold-soft)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  @media (max-width:600px){
+    body{font-size:17px}
+    nav a{margin-left:14px}
+    .btn.ghost{margin:12px 0 0 0}
+    .showcase{padding:28px 20px}
+  }
+</style>
+</head>
+<body>
+
+<!-- LUTE LOGO (reusable symbol) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="lute" viewBox="0 0 64 64">
+    <!-- neck -->
+    <path d="M40 31 L55 10" stroke="#d4a537" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <!-- pegbox -->
+    <path d="M52 14 L58 8" stroke="#f1dfa8" stroke-width="7" stroke-linecap="round" fill="none"/>
+    <!-- body -->
+    <ellipse cx="27" cy="43" rx="17" ry="15" fill="#d4a537"/>
+    <ellipse cx="27" cy="43" rx="17" ry="15" fill="none" stroke="#f1dfa8" stroke-width="1.5"/>
+    <!-- sound hole -->
+    <circle cx="27" cy="43" r="5" fill="#0f2142"/>
+    <circle cx="27" cy="43" r="7.5" fill="none" stroke="#0f2142" stroke-width="1.2" opacity=".55"/>
+    <!-- strings -->
+    <path d="M30 40 L52 13" stroke="#0f2142" stroke-width=".9" opacity=".6" fill="none"/>
+    <path d="M33 43 L53 15" stroke="#0f2142" stroke-width=".9" opacity=".6" fill="none"/>
+  </symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg aria-hidden="true"><use href="#lute"/></svg>
+      Minstrel Studio
+    </a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+      <a href="#feedback">Feedback</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="hero">
+    <div class="wrap">
+      <svg class="logo" role="img" aria-label="Minstrel Studio lute logo"><use href="#lute"/></svg>
+      <h1>Build the world. <span>Write the book.</span></h1>
+      <p class="lead">Minstrel Studio is free worldbuilding and writing software for novelists. Keep your world, your maps, your timeline, and your manuscript in one place, on your own computer.</p>
+      <a class="btn" href="#download">Download for Windows</a>
+      <a class="btn ghost" href="#features">See what it does</a>
+      <p class="fine">Free &middot; No account &middot; No subscription &middot; Early release</p>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Everything a story world needs</h2>
+      <hr class="rule">
+      <p class="sub">Made by a working fiction author, for fiction authors, to keep a big world organized without a pile of disconnected documents.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>World pages</h3>
+          <p>Characters, places, factions, magic, history. Write pages that link to each other like your own private wiki.</p>
+        </div>
+        <div class="card">
+          <h3>Custom calendars &amp; timelines</h3>
+          <p>Invent your own calendar, then place events and eras on a timeline that links back to your pages.</p>
+        </div>
+        <div class="card">
+          <h3>Maps with pins</h3>
+          <p>Load your own map, drop resizable pins, and link each pin to the pages it belongs to.</p>
+        </div>
+        <div class="card">
+          <h3>Relationship maps</h3>
+          <p>See how your characters connect. Lines can be drawn automatically from your pages or labeled by hand.</p>
+        </div>
+        <div class="card">
+          <h3>A real manuscript editor</h3>
+          <p>Bold, italic, underline, highlight, find and replace, and comments. A pop-out editor window gives you a second-monitor writing setup with chapter navigation.</p>
+        </div>
+        <div class="card">
+          <h3>Tags &amp; quick notes</h3>
+          <p>Capture an idea fast, tag it, and find it again from any page or note that shares the tag.</p>
+        </div>
+        <div class="card">
+          <h3>Honest word counts</h3>
+          <p>Tracks what you actually typed. Pasted text does not inflate your count unless you want it to.</p>
+        </div>
+        <div class="card">
+          <h3>Publish your world</h3>
+          <p>Export your world as a web wiki and a front page you can put online for readers to explore.</p>
+        </div>
+        <div class="card">
+          <h3>Optional AI, off by default</h3>
+          <p>An AI helper is available only if you turn it on and add your own key. If you never do, it never runs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="download">
+    <div class="wrap">
+      <h2>Download</h2>
+      <hr class="rule">
+      <div class="two">
+        <div>
+          <p>Minstrel Studio is an early release for <strong>Windows</strong>. It installs like any other program and saves your worlds to a <strong>Minstrel Studio</strong> folder inside your Documents.</p>
+          <p style="margin:26px 0">
+            <a class="btn" id="dl-btn" href="https://github.com/YOUR-GITHUB-USERNAME/minstrel-studio/releases/latest">Download the latest version</a>
+          </p>
+          <div class="note">
+            <strong>If Windows shows a blue &ldquo;Windows protected your PC&rdquo; screen:</strong> this is normal for new independent software that is not yet code-signed. Click <em>More info</em>, then <em>Run anyway</em>.
+          </div>
+        </div>
+        <div>
+          <ol class="steps">
+            <li>Click the download button. On the page that opens, choose the file ending in <strong>Setup.exe</strong>.</li>
+            <li>Open the file once it finishes downloading and follow the installer.</li>
+            <li>Launch <strong>Minstrel Studio</strong> from your desktop or Start menu and create your first world.</li>
+          </ol>
+          <p style="color:var(--muted);font-size:.95rem;margin-top:6px">Mac and Linux versions are not available yet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="yours">
+    <div class="wrap two">
+      <div>
+        <h2>Your work stays yours</h2>
+        <hr class="rule">
+        <ul class="plain">
+          <li>Worlds are saved as files on your own computer, not on someone else's server.</li>
+          <li>No account, no sign-in, no subscription.</li>
+          <li>Nothing is sent anywhere unless you choose to publish a wiki or enable the optional AI link.</li>
+        </ul>
+      </div>
+      <div class="showcase">
+        <h2>See a world built with it</h2>
+        <p>The first world built in Minstrel Studio is <em>Emberdown</em>, published as a live wiki.</p>
+        <a class="btn" href="https://emberdown.ritchdavis.com" target="_blank" rel="noopener">Visit Emberdown</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="feedback">
+    <div class="wrap">
+      <h2>Found a bug? Have an idea?</h2>
+      <hr class="rule">
+      <p>Minstrel Studio is young, and writers shape what it becomes. Tell me what is confusing, broken, or missing.</p>
+      <p>
+        <a class="btn" id="issues-btn" href="https://github.com/YOUR-GITHUB-USERNAME/minstrel-studio/issues/new">Report a bug or suggest a feature</a>
+      </p>
+      <p style="color:var(--muted);font-size:.95rem">You will need a free GitHub account to post. A plain description of what happened is all it takes. No technical knowledge needed.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>&copy; <span id="yr">2026</span> Ritch Davis &middot; Minstrel Studio</div>
+    <div><a href="https://ritchdavis.com" target="_blank" rel="noopener">ritchdavis.com</a></div>
+  </div>
+</footer>
+
+<script>
+  try { document.getElementById('yr').textContent = new Date().getFullYear(); } catch(e) {}
+</script>
+</body>
+</html>
